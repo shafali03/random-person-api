@@ -1,5 +1,5 @@
 .max-height {
-  min-height: 100vh;
+  min-height: 90vh;
 }
 .person-icon {
   font-size: 1.5rem;
@@ -8,7 +8,7 @@
   font-size: 0.7rem;
 }
 .card-img-top {
-  height: 350px;
+  height: 200px;
 }
 
 @media screen and (min-width: 576px) {
