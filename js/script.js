@@ -1,50 +1,50 @@
 
-const btn = document.getElementById('btn');
+const btn = document.querySelector('.btn');
+
 btn.addEventListener('click', function () {
-    getPerson(getData);
+    //creating fetch
+    fetch("https://randomuser.me/api/")
+        .then(data => data.json())
+        .then(data => showData(data))
+        .catch(error => console.log(error));
 });
 
+const ajax = new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
 
-function getPerson(cb) {
-    const url = `https://randomuser.me/api/`;
-    const ajax = new XMLHttpRequest();
-    ajax.open('GET', url, true);
+    const url = "https://randomuser.me/api/";
+    xhr.open("GET", url, true);
 
-
-    ajax.onload = function () {
-        if (this.status === 200) {
-            cb(this.responseText, showData)
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            resolve(xhr.responseText);
+        } else {
+            reject(Error(xhr.statusText))
         }
-        else {
-            this.onerror()
-        }
-    }
+    };
+    xhr.onerror = () => {
+        reject(Error('there was an error'))
+    };
 
+    xhr.send();
+});
 
+function showData(data) {
+    const {
+        name: { first },
+        dob: { age }
+    } = data.results[0];
 
-    ajax.onerror = function () {
-        console.log('error');
-
-
-    }
-    ajax.send()
+    document.getElementById("first").textContent = first;
+    document.getElementById("age").textContent = age;
 }
 
-function getData(response, cb) {
-    const data = JSON.parse(response);
 
-    const { name: { first }, name: { last }, picture: { medium }, location: { street }, phone, email } = data.results[0];
+// fetch("https://randomuser.me/api/")
+//     .then(data => data.json())
+//     .then(data => console.log(data))
+//     .catch(error => console.log(error));
 
-    cb(first, last, medium, street, phone, email);
-}
 
-function showData(first, last, medium, street, phone, email) {
-    // console.log(data);
-    document.getElementById('first').textContent = first;
-    document.getElementById('last').textContent = last;
-    document.getElementById('street').textContent = street;
-    document.getElementById('phone').textContent = phone;
-    document.getElementById('email').textContent = email;
-    document.getElementById('photo').src = medium;
 
-}
+
