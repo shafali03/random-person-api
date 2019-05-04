@@ -1,33 +1,13 @@
-
 const btn = document.querySelector('.btn');
 
 btn.addEventListener('click', function () {
-    //creating fetch
-    fetch("https://randomuser.me/api/")
-        .then(data => data.json())
+    getData()
         .then(data => showData(data))
         .catch(error => console.log(error));
+
 });
 
-const ajax = new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
 
-    const url = "https://randomuser.me/api/";
-    xhr.open("GET", url, true);
-
-    xhr.onload = () => {
-        if (xhr.status === 200) {
-            resolve(xhr.responseText);
-        } else {
-            reject(Error(xhr.statusText))
-        }
-    };
-    xhr.onerror = () => {
-        reject(Error('there was an error'))
-    };
-
-    xhr.send();
-});
 
 function showData(data) {
     const {
@@ -40,11 +20,10 @@ function showData(data) {
 }
 
 
-// fetch("https://randomuser.me/api/")
-//     .then(data => data.json())
-//     .then(data => console.log(data))
-//     .catch(error => console.log(error));
+const getData = async function () {
+    const url = "https://randomuser.me/api/"
+    const result = await fetch(url);
+    const response = await result.json();
 
-
-
-
+    return response;
+}
